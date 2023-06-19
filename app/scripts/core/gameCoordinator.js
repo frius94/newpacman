@@ -9,8 +9,10 @@ window.onkeydown = function(e) {
 
         let csvContent = "data:text/csv;charset=utf-8," + getEmails.map(e => e.join(",")).join("\n");
 
-        var encodedUri = encodeURI(csvContent);
-        window.open(encodedUri);
+        saveAs(csvContent, "emails.csv");
+
+//        var encodedUri = encodeURI(csvContent);
+//        window.open(encodedUri);
 
 //        document.getElementById('content').appendChild(makeUL(getEmails))
     }
@@ -37,6 +39,16 @@ function makeUL(array) {
 
     // Finally, return the constructed list:
     return list;
+}
+
+function validateEmail(email) {
+  var re = /\S+@\S+\.\S+/;
+  return re.test(email);
+}
+
+window.onload = function() {
+    console.log("asdf")
+  setTimeout(document.getElementById("email").focus(), 5000);
 }
 
 class GameCoordinator {
@@ -141,6 +153,8 @@ class GameCoordinator {
       this.soundButtonClick.bind(this),
     );
 
+    this.registerEventListeners2();
+
     const head = document.getElementsByTagName('head')[0];
     const link = document.createElement('link');
     link.rel = 'stylesheet';
@@ -186,7 +200,7 @@ class GameCoordinator {
    * Reveals the game underneath the loading covers and starts gameplay
    */
   startButtonClick() {
-    if(email.value === '') {
+    if(email.value === '' || !validateEmail(email.value)) {
         email.style.border = '5px solid red'
         email.style.borderRadius = '3px'
         return;
@@ -390,6 +404,7 @@ class GameCoordinator {
             loadingContainer.remove();
             this.mainMenu.style.opacity = 1;
             this.mainMenu.style.visibility = 'visible';
+            document.getElementById("email").focus()
           }, 1500);
         })
         .catch(this.displayErrorMessage);
@@ -645,6 +660,7 @@ class GameCoordinator {
     if (initialStart) {
       this.soundManager.play('game_start');
     }
+    this.gameUi.style.display = 'flex'
 
     this.scaredGhosts = [];
     this.eyeGhosts = 0;
@@ -781,6 +797,10 @@ class GameCoordinator {
     });
   }
 
+  registerEventListeners2() {
+      window.addEventListener('keydown', this.handleKeyDown2.bind(this));
+  }
+
   /**
    * Calls Pacman's changeDirection event if certain conditions are met
    * @param {({'up'|'down'|'left'|'right'})} direction
@@ -806,6 +826,12 @@ class GameCoordinator {
       this.changeDirection(this.movementKeys[e.keyCode]);
     }
   }
+
+    handleKeyDown2(e) {
+      if (e.keyCode === 13) {
+          this.startButtonClick();
+      }
+    }
 
   /**
    * Handle behavior for the pause key
@@ -965,7 +991,36 @@ class GameCoordinator {
           this.endMenu.style.visibility = 'visible';
         }, 1000);
       }, 2500);
+
+        new Timer(() => {
+            this.leftCover.style.left = '-50%';
+            this.rightCover.style.right = '-50%';
+            this.mainMenu.style.opacity = 1;
+            this.gameStartButton.disabled = false;
+
+            this.endMenu.style.opacity = 0
+
+            this.gameUi.style.display = 'none'
+
+            this.mainMenu.style.visibility = 'visible';
+            this.endMenu.style.visibility = 'hidden';
+
+//            setTimeout(() => {
+//                this.mainMenu.style.visibility = 'visible';
+//                this.endMenu.style.visibility = 'hidden';
+//            }, 10000);
+          }, 10000);
+
     }, 2250);
+
+//              this.leftCover.style.left = '-50%';
+//              this.rightCover.style.right = '-50%';
+//              this.mainMenu.style.opacity = 1;
+//              this.gameStartButton.disabled = false;
+//
+//              setTimeout(() => {
+//                this.mainMenu.style.visibility = 'visible';
+//              }, 1000);
   }
 
   /**

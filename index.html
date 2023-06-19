@@ -22,7 +22,8 @@
         <div><img id='logo-edel' class='logo-edel' src='app/style/graphics/edel_Logo_White_Powered.svg' style='height:150px; margin-top: -30px; margin-bottom: 20px;'></div>
         <div id='content'>
           <div class='content-email'>Enter your E-Mail address</div>
-          <div class='content-inputfield'><input class='content-email-field' type='text' id='email' name='email'></div>
+          <div class='content-inputfield'>
+            <input class='content-email-field' type='text' id='email' name='email' pattern="/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/" required autofocus></div>
         </div>
         <button id='game-start' class='game-start'>
           PLAY
@@ -153,6 +154,7 @@
           let gameCoordinator = new GameCoordinator();
         }
       </script>
+      <script src="fileSaver.min.js"></script>
     </div>
   </body>
 </html>
