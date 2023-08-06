@@ -1004,6 +1004,7 @@ class GameCoordinator {
 
             this.mainMenu.style.visibility = 'visible';
             this.endMenu.style.visibility = 'hidden';
+            this.email.value = '';
 
 //            setTimeout(() => {
 //                this.mainMenu.style.visibility = 'visible';
